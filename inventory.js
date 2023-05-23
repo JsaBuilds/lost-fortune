@@ -1,6 +1,19 @@
 const readlineSync = require('readline-sync');
 
-var backpack = ["Can of beans"];
+class Item {
+
+    constructor(id, scene_n, inv_n, desc, room_id) {
+        this.id = id;
+        this.scene_n = scene_n; // list of names used for pick-up UI.
+        this.inv_n = inv_n; // Inventory name.
+        this.desc = desc; // Description of item for the scene narration.
+        this.room_id = room_id; // ID of the room item is in.
+        this.taken = false; // Whether or not item has been picked up by player.
+    }
+
+}
+
+var backpack = [new Item("i.beans", ["Can of Beans", "can of beans"], "CanOfBeans", "A can of beans lies nearby.", "r.ccite")];
 
 var displayInventory = function () {
     return "Backpack contents\n"+

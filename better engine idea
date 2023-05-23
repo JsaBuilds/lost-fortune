@@ -22,7 +22,24 @@ the second item of the tuplet.
 
 There is a database that lists all the items in the game.
 
-Item class with ID, inventory title, scene desc (what to say about item in the scene), and
-Room it is located in:
+Item class with ID, inventory title, scene desc (what to say about item in the scene),
+Room it is located in, if it has been collected:
 
-    swamp_stick = Room("stick1", "Muddy Stick", "A muddy stick lies in the bog.", "gswamp5")
+    swamp_stick = Room("stick1", "Muddy Stick", "A muddy stick lies in the bog.", "gswamp5", false)
+
+when a new room is loaded into the game (via it's ID), the items' ID's are checked.
+If an item's ID matches the room ID and it has not been collected, it may be added
+to the game's list of current_items and displayed in the item section of the menu.
+
+When a player chooses to pick up an item, the game looks through its list of current_items
+(which items have IDs that match the current Room ID). If that item has not been picked up,
+the game adds the item to the player's inventory and sets that item's collected status to true.
+Then the menu is redisplayed to tell the player the item was collected.
+
+Picking up an item means the player types "B", then the scene title of the item. It will have to be
+a list. ex: ["stick", "Stick", "Thick Stick", ...]
+
+The item will have a different variable indicating the inventory title: what displays in the inventory.
+Inventory title will be 10 characters. ex: "ThickStick"
+
+
