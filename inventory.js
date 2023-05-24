@@ -4,7 +4,7 @@ class Item {
 
     constructor(id, scene_n, inv_n, desc, room_id) {
         this.id = id;
-        this.scene_n = scene_n; // list of names used for pick-up UI.
+        this.scene_n = scene_n; // Name used for pick-up UI.
         this.inv_n = inv_n; // Inventory name.
         this.desc = desc; // Description of item for the scene narration.
         this.room_id = room_id; // ID of the room item is in.
@@ -13,11 +13,20 @@ class Item {
 
 }
 
-var backpack = [new Item("i.beans", ["Can of Beans", "can of beans"], "CanOfBeans", "A can of beans lies nearby.", "r.ccite")];
+
+beans = new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite");
+stick = new Item("i.stick", "Thick Stick", "ThickStick", "A Thick Stick lies in the grass.", "r.wood1");
+rgun = new Item("i.rgun", "Rusty Shotgun", "RustyShGun", "A Rusty Shotgun lies half-buried.", "r.plain1");
+
+const items = [beans, stick, rgun]
+
+var backpack = [new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite"), "sdfsdf", "sdfsd", "dfsdf", "Sdfsd"];
 
 var displayInventory = function () {
-    return "Backpack contents\n"+
-    backpack.join(" | ");
+    console.log("Inventory:");
+    for (let i = 0; i < 5; i++) {
+        console.log(i+1 + ") " + backpack[i].inv_n);
+    }
 }
 
 exports.addToInventory = function (item) {
@@ -52,3 +61,8 @@ var replaceItemWith = function (item) {
 
 exports.replaceItemWith = replaceItemWith;
 exports.displayInventory = displayInventory;
+
+exports.items = items;
+exports.beans = beans;
+exports.stick = stick;
+exports.rgun = rgun;
