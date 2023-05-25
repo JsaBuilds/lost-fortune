@@ -9,27 +9,25 @@ exports.Game = function Game(name) {
     this.name = name;
 
     this.play = function () {
-        // Person-related
         // Leader's (general's) name
         var genName;
-        var soldiers = [];
-        var soldierNum;
-        var survivors;
 
         // Stats
-        var killed = 2; // Soldiers killed.
         var lives = 3;
         var health = 100;
-        var day = 1;
+
         var gameOutput = "";
 
         // options
 
         var options = [];
         var choice;
-        var choiceList = [];
+        var opt1;
+        var opt2;
+        var opt3;
+        var opt4;
         var pickupItem = "";
-        var msg;
+        var scene_desc;
 
         var continueGame = "y";
 
@@ -40,30 +38,6 @@ exports.Game = function Game(name) {
                 genName = input.question("Enter the name of your main character >> ");
                 
             } while (genName == "");
-            soldiers.push(genName);
-        }
-
-        function getSoldierNames() {
-            console.log("\nEnter the name of a soldier at your command.\nThen press enter when you are done.");
-
-            var nameInput;
-
-            do {
-
-                nameInput = input.question(">> ");
-                if (nameInput == "") {
-                    if (soldiers.length < 5) {console.log("Must enter at least 4 names.")}
-                    else { break; }
-                }
-
-                else {
-                    soldiers.push(nameInput);
-                }
-
-            } while (soldiers.length < 10);
-
-            soldierNum = soldiers.length;
-            survivors = soldierNum - killed;
         }
 
         // in-game display stuff.
@@ -78,10 +52,6 @@ exports.Game = function Game(name) {
             console.log("\n    The Galactic Congress sent a legion of soldiers led by General " + genName+ " to find this fortune.");
             console.log("They tracked the theft to the stormy planet of Fallahathu 7. (They did not inform the Terrocom,");
             console.log("however, for fear he might incinerate the planet.)                                                   ");
-            //console.log("The team members are:");
-
-            //soldierNames();
-
             console.log("On arrival in the Fallahathu system, the General and company were ambushed by the Zortax Eevorp, a");
             console.log("hostile intergalactic species. After a harsh battle he and his crew were crashlanded on Fallahathu 7.")
             console.log("In the crash, all soldiers died, leaving " + genName + " the sole survivor.");
@@ -91,33 +61,22 @@ exports.Game = function Game(name) {
             input.question("~ Press ENTER to continue. ~ ");
         }
 
-        function soldierNames() {
-            for (i = 0; i < soldierNum; i++) {
-                console.log("> " + soldiers[i]);
-            }
-        }
-
-        function removeDead() {
-            while (soldierNum > survivors) {
-                soldiers.pop();
-                soldierNum -= 1;
-            }
-        }
-
         function displayOptions() {
             console.log("  {A} Look in backpack");
-            console.log("  {B} Pickup item\n");
-            for (i=0; i < 4; i++) {
-                console.log("  [" + (i+1) + "] " + options[i]);
-            }
+            console.log("  {B} Pickup item");
+            console.log("  {C} Use item\n");
+            console.log("  [1] " + opt1[0]);
+            console.log("  [2] " + opt2[0]);
+            console.log("  [3] " + opt3[0]);
+            console.log("  [4] " + opt4[0]);
         }
 
         function displayMenu() {
                 clearScreen();
                 console.log(gameOutput);
                 gameOutput = "";
-                console.log("----------------------------\n");
-                console.log(msg);
+                console.log("\n----------------------------\n");
+                console.log(scene_desc);
                 console.log("\n---------- Stats -----------\n");
                 console.log("Lives: " + lives);
                 console.log("Health: " + health);
@@ -134,28 +93,27 @@ exports.Game = function Game(name) {
         // Gameplay and functionality.
 
 
-        function changeScene(possibleOptions) { // fix this to do a function as well.
-            newScreenOptions = possibleOptions["choice" + choice];
-            if (newScreenOptions[0] == "death") {
-                deathMsg(newScreenOptions[1]);
-            }
-            else {
-                changeOptions(newScreenOptions[0], newScreenOptions[1], 
-                              newScreenOptions[2], newScreenOptions[3], 
-                              newScreenOptions[4]);
-            }
-        }
+        //function changeScene(possibleOptions) { // fix this to do a function as well.
+          //  newScreenOptions = possibleOptions["choice" + choice];
+            //if (newScreenOptions[0] == "death") {
+              //  deathMsg(newScreenOptions[1]);
+            //}
+            //else {
+              //  changeOptions(newScreenOptions[0], newScreenOptions[1], 
+                //              newScreenOptions[2], newScreenOptions[3], 
+                  //            newScreenOptions[4]);
+   //         }
+     //   }
 
         function scene_chg(goto_id) { // Scene change: Go to the Go-to ID
-            console.log("Searching for room ID " + goto_id + " within:");
-            //console.log(roomlist);
+            console.log("Searching for room ID '" + goto_id + "' within:");
             for (const room of roomlist) {
                 console.log("room ID: " + room.id);
                 if (room.id == goto_id) {
                     console.log("Found " + room.id);
                     changeOptions(room.opt1, room.opt2, room.opt3, room.opt4, room.desc);
                     console.log("new options");
-                    console.log(options);
+                    console.log([opt1, opt2, opt3, opt4, scene_desc]);
                 }
             }
         }
@@ -171,19 +129,41 @@ exports.Game = function Game(name) {
                 gameOutput = inventory.addToInventory(pickupItem);
                 displayMenu();
             }
+           
+            else if (choice == "1") {
+                scene_chg(opt1[1]);
+                displayMenu();
+            }
+
+            else if (choice == "2") {
+                scene_chg(opt2[1]);
+                displayMenu();
+            }
+
+            else if (choice == "3") {
+                scene_chg(opt3[1]);
+                displayMenu();
+            }
+
+            else if (choice == "4") {
+                scene_chg(opt4[1]);
+                displayMenu();
+            }
+
             //else if (options[choice] == undefined || options[choice] == "") {
               //  console.log("reset: choice == undefined or '' "); chooseOption(); 
            // }
-            else { scene_chg(choice); }//console.log(msg); console.log(options); chooseOption(); }
+
+            else { scene_chg(choice); }//console.log(scene_desc); console.log(options); chooseOption(); }
 
         }
 
-        function changeOptions(opt1, opt2, opt3, opt4, newMsg) {
-            options[0] = opt1;
-            options[1] = opt2;
-            options[2] = opt3;
-            options[3] = opt4;
-            msg = newMsg;
+        function changeOptions(newopt1, newopt2, newopt3, newopt4, desc) {
+            opt1 = newopt1;
+            opt2 = newopt2;
+            opt3 = newopt3;
+            opt4 = newopt4;
+            scene_desc = desc;
         }
 
         function setItems(itemList) {
@@ -230,92 +210,15 @@ exports.Game = function Game(name) {
 
         function mainGameLoop() {
 
-            changeOptions("Go deeper into woods.", "Setup camp.", "Fight Zortax Eevorp.", "Head out into plains.",
-            "The woods in front of you and\nthe ship behind you, your journey begins.");
+           // changeOptions("Go deeper into woods.", "Setup camp.", "Fight Zortax Eevorp.", "Head out into plains.",
+            //"The woods in front of you and\nthe ship behind you, your journey begins.");
+            scene_chg("r.ccite");
 
+            displayMenu();
             displayMenu();
 
         }
 
-//            changeScene({
-//                choice1: ["Open Backpack.", "Pick up stick.", "Go left.", "Go right.",
-//                "You and your troops trek deeper into the woods, further from"+
-//                "\nthe crash site. You come to a fork in the road. A big thick stick"+
-//                "\nlies in the grass."],
-//                choice2: ["Inspect the campsite.", "Stay for the night.", "Move on.", "",
-//                "You order the troops to set up\ncamp. Tents are pitched."],
-//                choice3: ["death", "You and your troops go back out and put up a fight against the Zortax Eevorp,"+
-//                                    "\nwho have come to collect your ship for scrap. Unfortunately, they have the"+
-//                                    "\nbetter weapons, and you and your soldiers were destroyed."],
-//                choice4: ["Open Backpack.", "Pick up shotgun.", "Move on.", "",
-//                "You and the troops turn east\nand head for the plains instead\nof the forest. You find\na rusty shotgun on the ground."]
-//            });
-//
-//            setItems(["Thick stick", "", "", "Rusty Shotgun"]);
-//
-//            displayMenu();
-//
-//            if (checkProgressFromScreen(1) == 1) { // This copy-pasting is less than optimal, but I'll fix it soon.
-//                if (choice == 1) { inventory.displayInventory(); }
-//
-//                else if (choice == 2) { 
-//                    inventory.addToInventory("Thick stick"); }
-//
-//                else if (choice == 3) {
-//                    changeOptions("Enter the hollow.", "Walk around the hollow.", "Walk straight through.", "Go back.",
-//                    "You go left. Presently you come to a narrow hollow."+
-//                    "\nThe trees on both sides lean over to form a roof, and"+
-//                    "\na large rock in similar shape to a compass needle sits"+
-//                    "\non the side of the hill, pointing off at an angle into."+
-//                    "\nthe hollow");
-//                }
-//
-//                else if (choice == 4) {
-//                    changeOptions("Enter the cave.", "Setup camp nearby.", "Setup camp elsewhere.", "",
-//                    "You go right. You and your troops walk for a long time."+
-//                    "\nThe light coming through the leaves darkens, and a fog"+
-//                    "\nbegins to develop. One of the troops points ahead at a"+
-//                    "\nlarge cave entrance. 'Let's go in there,' he suggests.");
-//                }
-//            }
-//
-//            if (checkProgressFromScreen(1) == 2) {
-//                if (choice == 1) {
-//                    changeOptions("add options", "add options", "add options", "add options",
-//                    "You take a stroll around your campsite, peering"+
-//                    "\nout into the forest for any possible danger."+
-//                    "\nSomething rushes by your feet. a rabbit-like"+
-//                    "\ncreature jumps out of the bushes and slashes at"+
-//                    "\nyour leg with its claws. You kick it, sending it"+
-//                    "\nflying. Blood seeps from your pant leg.");
-//                    doDamage(10);
-//                }
-//                else if (choice == 2) {
-//                    changeOptions("add options", "add options", "add options", "add options",
-//                    "You and your troops rest at the camp during the"+
-//                    "\nnight. You wake up refreshed and ready to continue"+
-//                    "\nyour journey.");
-//                }
-//                else if (choice == 3) {
-//                    changeOptions("add options", "add options", "add options", "add options",
-//                    "After quickly glancing at the area, you decide to"+
-//                    "\nmove on; it would be unwise to remain in so un-"+
-//                    "\nprotected a place.");
-//                }
-//            }
-//
-//            if (checkProgressFromScreen(1) == 4) {
-//                if (choice == 1) { inventory.displayInventory();}
-//                else if (choice == 2) { inventory.addToInventory("Rusty shotgun"); }
-//
-//                else if (choice == 3) {
-//                    changeOptions("add options", "add options", "add options", "add options",
-//                    "You move on, leaving the ancient weapon.");
-//                }
-//            }
-//            displayMenu();
-//        }
-//
         displayIntroduction();
         mainGameLoop();
     };

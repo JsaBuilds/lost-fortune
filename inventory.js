@@ -13,12 +13,12 @@ class Item {
 
 }
 
+const items = [
+    new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite"),
+    new Item("i.stick", "Thick Stick", "ThickStick", "A Thick Stick lies in the grass.", "r.wood1"),
+    new Item("i.rgun", "Rusty Shotgun", "RustyShGun", "A Rusty Shotgun lies half-buried.", "r.plain1"),
+]
 
-beans = new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite");
-stick = new Item("i.stick", "Thick Stick", "ThickStick", "A Thick Stick lies in the grass.", "r.wood1");
-rgun = new Item("i.rgun", "Rusty Shotgun", "RustyShGun", "A Rusty Shotgun lies half-buried.", "r.plain1");
-
-const items = [beans, stick, rgun]
 
 var backpack = [new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite"), "sdfsdf", "sdfsd", "dfsdf", "Sdfsd"];
 
@@ -63,6 +63,3 @@ exports.replaceItemWith = replaceItemWith;
 exports.displayInventory = displayInventory;
 
 exports.items = items;
-exports.beans = beans;
-exports.stick = stick;
-exports.rgun = rgun;

@@ -16,7 +16,7 @@ class Room {
 // (0)
 const crashsite = new Room("r.ccite", 
         "The woods in front of you and\nthe ship behind you, your journey begins.",
-        ["Go deeper into woods.", "r.wood1"], ["Go through the swamp.", "r.setcamp"], ["Fight Zortax Eevorp.", "r.fdeath"], ["Head out into plains.", "r.plain"]);
+        ["Go deeper into woods.", "r.wood1"], ["Go through the swamp.", "r.swamp1"], ["Fight Zortax Eevorp.", "r.fdeath"], ["Head out into plains.", "r.plain1"]);
 
 // (0.1) Deeper into woods:
 const wood_entrance = new Room("r.wood1", 
