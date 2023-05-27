@@ -1,6 +1,8 @@
 const input = require('readline-sync');
 
 const inventory = require('./inventory');
+//console.log(require('./inventory'));
+//console.log(inventory.items)
 const rooms = require('./rooms.js');
 
 const roomlist = rooms.roomlist;
@@ -28,6 +30,7 @@ exports.Game = function Game(name) {
         var opt4;
         var pickupItem = "";
         var scene_desc;
+        var room_id = "r.ccite";
 
         var continueGame = "y";
 
@@ -73,10 +76,12 @@ exports.Game = function Game(name) {
 
         function displayMenu() {
                 clearScreen();
+                //console.log(room_id)
                 console.log(gameOutput);
                 gameOutput = "";
                 console.log("\n----------------------------\n");
-                console.log(scene_desc);
+                console.log(scene_desc + "\n");
+                disp_items();
                 console.log("\n---------- Stats -----------\n");
                 console.log("Lives: " + lives);
                 console.log("Health: " + health);
@@ -92,19 +97,6 @@ exports.Game = function Game(name) {
 
         // Gameplay and functionality.
 
-
-        //function changeScene(possibleOptions) { // fix this to do a function as well.
-          //  newScreenOptions = possibleOptions["choice" + choice];
-            //if (newScreenOptions[0] == "death") {
-              //  deathMsg(newScreenOptions[1]);
-            //}
-            //else {
-              //  changeOptions(newScreenOptions[0], newScreenOptions[1], 
-                //              newScreenOptions[2], newScreenOptions[3], 
-                  //            newScreenOptions[4]);
-   //         }
-     //   }
-
         function scene_chg(goto_id) { // Scene change: Go to the Go-to ID
             console.log("Searching for room ID '" + goto_id + "' within:");
             for (const room of roomlist) {
@@ -112,8 +104,23 @@ exports.Game = function Game(name) {
                 if (room.id == goto_id) {
                     console.log("Found " + room.id);
                     changeOptions(room.opt1, room.opt2, room.opt3, room.opt4, room.desc);
+                    room_id = room.id
                     console.log("new options");
                     console.log([opt1, opt2, opt3, opt4, scene_desc]);
+                }
+            }
+        }
+
+        function disp_items() { // Display items in the scene
+           // console.log(items);
+            for (const item of inventory.items) {
+
+                //console.log(item.id + " | " + item.room_id);
+
+                if (item.room_id == room_id) {
+
+                    console.log(item.desc);
+
                 }
             }
         }
@@ -123,31 +130,25 @@ exports.Game = function Game(name) {
             console.log(choice);
             if (choice == "a" || choice == "A") { // Look in inventory
                 gameOutput = inventory.displayInventory();
-                displayMenu();
             }
             else if (choice == "b" || choice == "B") { // Pickup item
                 gameOutput = inventory.addToInventory(pickupItem);
-                displayMenu();
             }
            
             else if (choice == "1") {
                 scene_chg(opt1[1]);
-                displayMenu();
             }
 
             else if (choice == "2") {
                 scene_chg(opt2[1]);
-                displayMenu();
             }
 
             else if (choice == "3") {
                 scene_chg(opt3[1]);
-                displayMenu();
             }
 
             else if (choice == "4") {
                 scene_chg(opt4[1]);
-                displayMenu();
             }
 
             //else if (options[choice] == undefined || options[choice] == "") {
@@ -155,6 +156,8 @@ exports.Game = function Game(name) {
            // }
 
             else { scene_chg(choice); }//console.log(scene_desc); console.log(options); chooseOption(); }
+
+            displayMenu();
 
         }
 
