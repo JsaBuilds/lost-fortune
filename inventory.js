@@ -14,7 +14,7 @@ class Item {
 }
 
 var items = [
-    new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite"),
+    new Item("i.beans", "Can of Beans", "CanOfBeans", "A Can of Beans lies nearby.", "r.ccite"),
     new Item("i.stick", "Thick Stick", "ThickStick", "A Thick Stick lies in the grass.", "r.wood1"),
     new Item("i.rgun", "Rusty Shotgun", "RustyShGun", "A Rusty Shotgun lies half-buried.", "r.plain1"),
 ];
@@ -22,9 +22,10 @@ var items = [
 var backpack = [new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite"), "sdfsdf", "sdfsd", "dfsdf", "Sdfsd"];
 
 var displayInventory = function () {
-    console.log("Inventory:");
     for (let i = 0; i < 5; i++) {
-        console.log(i+1 + ") " + backpack[i].inv_n);
+        itemname = backpack[i].inv_n
+        if (itemname != undefined) { console.log(i+1 + ") " + itemname); }
+        else {console.log(i+1 + ") "); }
     }
 }
 

@@ -14,13 +14,11 @@ exports.Game = function Game(name) {
         // Leader's (general's) name
         var genName;
 
-        // Stats
-        var lives = 3;
-        var health = 100;
+        // Display
 
         var gameOutput = "";
 
-        // options
+        // Options
 
         var options = [];
         var choice;
@@ -32,7 +30,11 @@ exports.Game = function Game(name) {
         var scene_desc;
         var room_id = "r.ccite";
 
+        // Game loop
+
         var continueGame = "y";
+        var gameOver = false;
+
 
         // Getting name input.
 
@@ -43,12 +45,11 @@ exports.Game = function Game(name) {
             } while (genName == "");
         }
 
-        // in-game display stuff.
+        // In-game display stuff.
 
         function displayIntroduction() {
             console.log("\n~ Welcome to Lost Fortune ~\n");
             getLeader();
-            //getSoldierNames();
             console.log("\n    The great fortune of the powerful and influencial Grand Terrocom of 55 Cancri E has been stolen!");
             console.log("The Terrocom is furious over the issue, and when he gets angry, planets are blown up. The Galaxy is ");
             console.log("gripped in fear, every being dreading their planet might be next.                                   ");
@@ -64,35 +65,40 @@ exports.Game = function Game(name) {
             input.question("~ Press ENTER to continue. ~ ");
         }
 
-        function displayOptions() {
-            console.log("  {A} Look in backpack");
-            console.log("  {B} Pickup item");
-            console.log("  {C} Use item\n");
-            console.log("  [1] " + opt1[0]);
-            console.log("  [2] " + opt2[0]);
-            console.log("  [3] " + opt3[0]);
-            console.log("  [4] " + opt4[0]);
+        function clearScreen() {
+            console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
 
         function displayMenu() {
                 clearScreen();
-                //console.log(room_id)
+                console.log("\n----------------------------\n");
                 console.log(gameOutput);
                 gameOutput = "";
                 console.log("\n----------------------------\n");
                 console.log(scene_desc + "\n");
                 disp_items();
-                console.log("\n---------- Stats -----------\n");
-                console.log("Lives: " + lives);
-                console.log("Health: " + health);
+                console.log("\n-------- Inventory ---------\n");
+                inventory.displayInventory();
                 console.log("\n-----------------------------\n");
                 displayOptions();
                 console.log("\n-----------------------------\n");
-                chooseOption();
         }
 
-        function clearScreen() {
-            console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        function disp_items() { // Display items in the scene
+            for (const item of inventory.items) {
+                if (item.room_id == room_id) {
+                    console.log(item.desc);
+                }
+            }
+        }
+
+        function displayOptions() {
+            console.log("  Type \"use ITEM NUMBER\" to use an inventory item.");
+            console.log("  Type \"take ITEM NAME\" to pick up an item.\n");
+            console.log("  [1] " + opt1[0]); // opt = [action, room ID]
+            console.log("  [2] " + opt2[0]);
+            console.log("  [3] " + opt3[0]);
+            console.log("  [4] " + opt4[0]);
         }
 
         // Gameplay and functionality.
@@ -111,32 +117,13 @@ exports.Game = function Game(name) {
             }
         }
 
-        function disp_items() { // Display items in the scene
-           // console.log(items);
-            for (const item of inventory.items) {
-
-                //console.log(item.id + " | " + item.room_id);
-
-                if (item.room_id == room_id) {
-
-                    console.log(item.desc);
-
-                }
-            }
-        }
-
         function chooseOption() {
             choice = input.question(">> "); // Ask for user input.
-            console.log(choice);
-            if (choice == "a" || choice == "A") { // Look in inventory
-                gameOutput = inventory.displayInventory();
-            }
-            else if (choice == "b" || choice == "B") { // Pickup item
-                gameOutput = inventory.addToInventory(pickupItem);
-            }
+
+            // Change scene
            
-            else if (choice == "1") {
-                scene_chg(opt1[1]);
+            if (choice == "1") {
+                scene_chg(opt1[1]); // opt = [action, room ID]
             }
 
             else if (choice == "2") {
@@ -151,13 +138,11 @@ exports.Game = function Game(name) {
                 scene_chg(opt4[1]);
             }
 
-            //else if (options[choice] == undefined || options[choice] == "") {
-              //  console.log("reset: choice == undefined or '' "); chooseOption(); 
-           // }
-
-            else { scene_chg(choice); }//console.log(scene_desc); console.log(options); chooseOption(); }
-
-            displayMenu();
+            else {
+                cmd = choice.split(" "); console.log(cmd);
+                if (cmd[0] == "take") { gameOutput = "take command: " + cmd[1]; }
+                else if (cmd[0] == "use") { gameOutput = "use command: " + cmd[1]; }
+            }
 
         }
 
@@ -169,60 +154,16 @@ exports.Game = function Game(name) {
             scene_desc = desc;
         }
 
-        function setItems(itemList) {
-            itemInScene = itemList[choice - 1];
-
-            if (itemInScene == undefined) {
-                pickupItem = "";
-            }
-            else { pickupItem = itemInScene; }
-        }
-
-        function checkProgressFromScreen(screenNum) {
-            var choiceInList = choiceList[screenNum - 1]; // for example, checkProgressFromScreen(1) means return choiceList[0].
-            return choiceInList;
-        }
-
-        // Losing health and death.
-
-        function doDamage(damage) {
-            health -= damage;
-            gameOutput = "-" + damage + " Health.";
-            if (health <= 0) {
-                deathMsg("Your health dropped to zero.");
-            }
-        }
-
-        function deathMsg(msg) {
-            console.log(msg);
-            lives -= 1;
-
-            if (lives > 0) {
-                console.log("Lives: " + lives);
-                console.log(" - Would you like to continue? [y/n]");
-                continueGame = input.question(">> ");
-
-                if (continueGame == "y") { mainGameLoop(); }
-            }
-
-            else {
-                console.log("\n~ Game Over ~\n");
-                 // TODO: need something here to stop game from continuing
-            }
-        }
-
         function mainGameLoop() {
-
-           // changeOptions("Go deeper into woods.", "Setup camp.", "Fight Zortax Eevorp.", "Head out into plains.",
-            //"The woods in front of you and\nthe ship behind you, your journey begins.");
-            scene_chg("r.ccite");
-
             displayMenu();
-            displayMenu();
-
+            while (gameOver == false) {
+                chooseOption();
+                displayMenu();
+            }
         }
 
         displayIntroduction();
+        scene_chg("r.ccite");
         mainGameLoop();
     };
 }
