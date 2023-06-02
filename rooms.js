@@ -16,38 +16,36 @@ class Room {
 // (0)
 const crashsite = new Room("r.ccite", 
         "The woods in front of you and\nthe ship behind you, your journey begins.",
-        ["Go deeper into woods.", "r.wood1"], ["Go through the swamp.", "r.swamp1"], ["Fight Zortax Eevorp.", "r.fdeath"], ["Head out into plains.", "r.plain1"]);
+        ["Go deeper into woods.", "r.wood1"], ["Go through the swamp.", "r.swamp1"], ["Fight Zortax Eevorp.", "d.eevorp"], ["Head out into plains.", "r.plain1"]);
 
 // (0.1) Deeper into woods:
 const wood_entrance = new Room("r.wood1", 
         "You and your troops trek deeper into the woods, further from"+
-        "\nthe crash site. You come to a fork in the road. [A big thick stick"+
-        "\nlies in the grass.]",
+        "\nthe crash site. You come to a fork in the road.",
         ["Go left.", "r.hollow1"], ["Go right.", "r.cave1"], ["", ""], ["", ""]);
 
 // (0.2) through swamp:
 const swamp_entrance = new Room("r.swamp1",
-        "Rubbery sludge slips into your boot and soaks into your socks.",
+        "Rubbery sludge seeps into your boot and soaks into your socks.",
         ["", ""], ["", ""], ["", ""], ["", ""])
 
 // (0.3) fight:
-const fight_death = new Room("r.fdeath",
+const fight_death = new Room("d.eevorp",
         "You and your troops go back out and put up a fight against the Zortax Eevorp,"+
         "\nwho have come to collect your ship for scrap. Unfortunately, they have the"+
-        "\nbetter weapons, and you and your soldiers were destroyed.",
+        "\nbetter weapons and large numbers. You were overwhelmed and destroyed.",
         ["", ""], ["", ""], ["", ""], ["", ""]);
 
 // (0.4) into Plains:
 const plains_entrance = new Room("r.plain1",
-        "You and the troops turn east\nand head for the plains instead\nof the forest. You find\na rusty shotgun on the ground.",
-        ["Open Backpack.", ""], ["Pick up shotgun.", ""], ["Move on.", ""], ["", ""]);
+        "You and the troops turn east\nand head for the plains instead\nof the forest.",
+        ["Go West.", ""], ["Go South.", ""], ["Return to the forest.", "r.wood1"], ["", ""]);
 
 // (0.1.1) Go left:
 const wood_cave = new Room("r.cave1",
-        "You go right. You and your troops walk for a long time."+
+        "You go right. You walk for a long time."+
         "\nThe light coming through the leaves darkens, and a fog"+
-        "\nbegins to develop. One of the troops points ahead at a"+
-        "\nlarge cave entrance.",
+        "\nbegins to develop. Ahead a large cave entrance yawns.",
         ["", ""], ["", ""], ["", ""], ["", ""]);
         
 // (0.1.2) Go right:

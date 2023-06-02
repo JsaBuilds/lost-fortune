@@ -19,25 +19,41 @@ var items = [
     new Item("i.rgun", "Rusty Shotgun", "RustyShGun", "A Rusty Shotgun lies half-buried.", "r.plain1"),
 ];
 
-var backpack = [new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite"), "sdfsdf", "sdfsd", "dfsdf", "Sdfsd"];
+var backpack = [new Item("i.beans", "Can of Beans", "CanOfBeans", "A can of beans lies nearby.", "r.ccite")];
 
 var displayInventory = function () {
     for (let i = 0; i < 5; i++) {
-        itemname = backpack[i].inv_n
-        if (itemname != undefined) { console.log(i+1 + ") " + itemname); }
-        else {console.log(i+1 + ") "); }
+        try {
+            itemname = backpack[i].inv_n;
+            console.log(i+1 + ") " + itemname); }
+
+        catch (TypeError) {
+            console.log(i+1 + ") "); }
     }
 }
 
-exports.addToInventory = function (item) {
-    if (item == "") { return "No items to pick up."; }
-    if (backpack.length < 5) {
-        backpack.push(item);
-        return item + " added to Backpack.";
-    }
-    else {
-        console.log("Your Backpack is too full.\nWould you like to replace an Item? [y/n]");
-        if (readlineSync.question(">> ") == "y") { replaceItemWith(item) }
+//exports.addToInventory = function (item) {
+  //  if (item == "") { return "No items to pick up."; }
+    //if (backpack.length < 5) {
+      //  backpack.push(item);
+        //return item + " added to Backpack.";
+    //}
+    //else {
+      //  console.log("Your Backpack is too full.\nWould you like to replace an Item? [y/n]");
+        //if (readlineSync.question(">> ") == "y") { replaceItemWith(item) }
+  //  }
+//}
+
+exports.addToInventory = function (name, room_id) {
+    for (const item of items) {
+        //console.log(item);
+        if (item.scene_n == name && item.room_id == room_id) {
+            //console.log("found " + item.scene_n);
+            if (backpack.length < 5) {
+                backpack.push(item);
+                //console.log(backpack)
+            }
+        }
     }
 }
 

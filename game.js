@@ -93,8 +93,8 @@ exports.Game = function Game(name) {
         }
 
         function displayOptions() {
-            console.log("  Type \"use ITEM NUMBER\" to use an inventory item.");
-            console.log("  Type \"take ITEM NAME\" to pick up an item.\n");
+            console.log("  Type \"use: ITEM NUMBER\" to use an inventory item.");
+            console.log("  Type \"take: ITEM NAME\" to pick up an item.\n");
             console.log("  [1] " + opt1[0]); // opt = [action, room ID]
             console.log("  [2] " + opt2[0]);
             console.log("  [3] " + opt3[0]);
@@ -139,8 +139,9 @@ exports.Game = function Game(name) {
             }
 
             else {
-                cmd = choice.split(" "); console.log(cmd);
-                if (cmd[0] == "take") { gameOutput = "take command: " + cmd[1]; }
+                cmd = choice.split(": "); console.log(cmd); // cmd[0] = command; cmd[1] = item scene name.
+
+                if (cmd[0] == "take") { gameOutput = "take command: " + cmd[1]; inventory.addToInventory(cmd[1], room_id); }
                 else if (cmd[0] == "use") { gameOutput = "use command: " + cmd[1]; }
             }
 
