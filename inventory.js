@@ -13,8 +13,18 @@ class Item {
 
 }
 
+class CostItem extends Item {
+
+    constructor(id, scene_n, inv_n, desc, room_id, cost_id) {
+        super(id, scene_n, inv_n, desc, room_id);
+        this.cost_id = cost_id;
+    }
+
+}
+
 var items = [
-    new Item("i.beans", "Can of Beans", "CanOfBeans", "A Can of Beans lies nearby.", "r.ccite"),
+    new Item("i.spoony", "Spoon", "Spoony", "A Spoon with a face lies nearby.", "r.ccite"),
+    new CostItem("i.beans", "Can of Beans", "CanOfBeans", "A Can of Beans lies nearby.", "r.ccite", "i.spoony"),
     new Item("i.stick", "Thick Stick", "ThickStick", "A Thick Stick lies in the grass.", "r.wood1"),
     new Item("i.rgun", "Rusty Shotgun", "RustyShGun", "A Rusty Shotgun lies half-buried.", "r.plain1"),
 ];
@@ -47,11 +57,24 @@ var displayInventory = function () {
 exports.addToInventory = function (name, room_id) {
     for (const item of items) {
         //console.log(item);
-        if (item.scene_n == name && item.room_id == room_id) {
+        if (item.taken == false && item.room_id == room_id && item.scene_n == name) {
             //console.log("found " + item.scene_n);
             if (backpack.length < 5) {
                 backpack.push(item);
+                item.taken = true;
                 //console.log(backpack)
+            }
+        }
+    }
+}
+
+exports.useItem = function (useitem, room_id) {
+    for (const item of items) {
+        if (item.taken == false && item.room_id == room_id && item.cost_id == useitem.id) {
+            var replace_index = backpack.indexOf(useitem);
+            if (backpack.length < 5) {
+                backpack[replace_index] = item;
+                item.taken = true;
             }
         }
     }
@@ -78,3 +101,4 @@ var replaceItemWith = function (item) {
 exports.replaceItemWith = replaceItemWith;
 exports.displayInventory = displayInventory;
 exports.items = items;
+exports.backpack = backpack;

@@ -41,7 +41,6 @@ exports.Game = function Game(name) {
         function getLeader() {
             do {
                 genName = input.question("Enter the name of your main character >> ");
-                
             } while (genName == "");
         }
 
@@ -86,7 +85,7 @@ exports.Game = function Game(name) {
 
         function disp_items() { // Display items in the scene
             for (const item of inventory.items) {
-                if (item.room_id == room_id) {
+                if (item.taken == false && item.room_id == room_id) {
                     console.log(item.desc);
                 }
             }
@@ -139,10 +138,10 @@ exports.Game = function Game(name) {
             }
 
             else {
-                cmd = choice.split(": "); console.log(cmd); // cmd[0] = command; cmd[1] = item scene name.
+                cmd = choice.split(": "); command = cmd[0]; select = cmd[1] // A string or a number.
 
-                if (cmd[0] == "take") { gameOutput = "take command: " + cmd[1]; inventory.addToInventory(cmd[1], room_id); }
-                else if (cmd[0] == "use") { gameOutput = "use command: " + cmd[1]; }
+                if (command == "take") {  inventory.addToInventory(select, room_id); }
+                else if (command == "use") { useitem = inventory.backpack[select - 1]; inventory.useItem(useitem, room_id); }//gameOutput = "use command: " + useitem; }
             }
 
         }
