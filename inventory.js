@@ -23,8 +23,8 @@ class CostItem extends Item {
 }
 
 var items = [
-    new Item("i.spoony", "Spoon", "Spoony", "A Spoon with a face lies nearby.", "r.ccite"),
-    new CostItem("i.beans", "Can of Beans", "CanOfBeans", "A Can of Beans lies nearby.", "r.ccite", "i.spoony"),
+    //new Item("i.spoony", "Spoon", "Spoony", "A Spoon with a face lies nearby.", "r.ccite"),
+    //new CostItem("i.beans", "Can of Beans", "CanOfBeans", "A Can of Beans lies nearby.", "r.ccite", "i.spoony"),
     new Item("i.stick", "Thick Stick", "ThickStick", "A Thick Stick lies in the grass.", "r.wood1"),
     new Item("i.rgun", "Rusty Shotgun", "RustyShGun", "A Rusty Shotgun lies half-buried.", "r.plain1"),
 ];
